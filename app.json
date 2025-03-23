@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.tibber",
-  "version": "1.9.21",
+  "version": "1.10.0",
   "compatibility": ">=8.1.0",
   "platforms": [
     "local",
@@ -518,6 +518,32 @@
         ]
       },
       {
+        "id": "production_changed",
+        "title": {
+          "en": "Production since midnight changed"
+        },
+        "tokens": [
+          {
+            "name": "production",
+            "type": "number",
+            "title": {
+              "en": "Production"
+            }
+          }
+        ],
+        "platforms": [
+          "local",
+          "cloud"
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=pulse"
+          }
+        ]
+      },
+      {
         "id": "cost_changed",
         "title": {
           "en": "Cost since midnight changed"
@@ -528,6 +554,46 @@
             "type": "number",
             "title": {
               "en": "Cost"
+            }
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "title": {
+              "en": "Day Total"
+            }
+          }
+        ],
+        "platforms": [
+          "local",
+          "cloud"
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=pulse"
+          }
+        ]
+      },
+      {
+        "id": "reward_changed",
+        "title": {
+          "en": "Reward since midnight changed"
+        },
+        "tokens": [
+          {
+            "name": "reward",
+            "type": "number",
+            "title": {
+              "en": "Reward"
+            }
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "title": {
+              "en": "Day Total"
             }
           }
         ],
@@ -546,7 +612,7 @@
       {
         "id": "daily_consumption_report",
         "title": {
-          "en": "Daily consumption is reported"
+          "en": "Daily result is reported"
         },
         "tokens": [
           {
@@ -561,6 +627,27 @@
             "type": "number",
             "title": {
               "en": "cost"
+            }
+          },
+          {
+            "name": "production",
+            "type": "number",
+            "title": {
+              "en": "production"
+            }
+          },
+          {
+            "name": "reward",
+            "type": "number",
+            "title": {
+              "en": "reward"
+            }
+          },
+          {
+            "name": "total",
+            "type": "number",
+            "title": {
+              "en": "total"
             }
           }
         ],
@@ -1218,7 +1305,10 @@
       "capabilities": [
         "measure_power",
         "meter_power",
+        "meter_power.production",
         "accumulatedCost",
+        "accumulatedReward",
+        "dayCost",
         "measure_current.L1",
         "measure_current.L2",
         "measure_current.L3",
@@ -1234,9 +1324,20 @@
         "accumulatedCost": {
           "decimals": 2
         },
+        "accumulatedReward": {
+          "decimals": 2
+        },
+        "dayCost": {
+          "decimals": 2
+        },
         "meter_power": {
           "title": {
             "en": "Consumption since midnight"
+          }
+        },
+        "meter_power.production": {
+          "title": {
+            "en": "Production since midnight"
           }
         },
         "measure_current.L1": {
@@ -1724,6 +1825,38 @@
       "type": "number",
       "title": {
         "en": "Cost since midnight"
+      },
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "¤",
+        "nl": "€",
+        "de": "€",
+        "sv": "kr",
+        "no": "kr"
+      },
+      "icon": "/drivers/pulse/assets/coin.svg"
+    },
+    "accumulatedReward": {
+      "type": "number",
+      "title": {
+        "en": "Earned since midnight"
+      },
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "¤",
+        "nl": "€",
+        "de": "€",
+        "sv": "kr",
+        "no": "kr"
+      },
+      "icon": "/drivers/pulse/assets/coin.svg"
+    },
+    "dayCost": {
+      "type": "number",
+      "title": {
+        "en": "Total since midnight"
       },
       "getable": true,
       "setable": false,

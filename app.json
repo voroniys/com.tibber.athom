@@ -1309,7 +1309,9 @@
         "measure_energy_lowest",
         "measure_energy_highest",
         "measure_energy_average",
-        "measure_negative_price_time_remaining"
+        "measure_negative_price_time_remaining",
+        "time_price_lowest",
+        "time_price_highest"
       ],
       "capabilitiesOptions": {
         "measure_price_total": {
@@ -1390,7 +1392,7 @@
         "meter_power.production",
         "accumulatedCost",
         "accumulatedReward",
-        "dayCost",
+        "measure_day_cost",
         "measure_current.L1",
         "measure_current.L2",
         "measure_current.L3",
@@ -1409,7 +1411,7 @@
         "accumulatedReward": {
           "decimals": 2
         },
-        "dayCost": {
+        "measure_day_cost": {
           "decimals": 2
         },
         "meter_power": {
@@ -1949,7 +1951,7 @@
       },
       "icon": "/drivers/pulse/assets/coin.svg"
     },
-    "dayCost": {
+    "measure_day_cost": {
       "type": "number",
       "title": {
         "en": "Total since midnight"
@@ -2207,6 +2209,30 @@
       },
       "icon": "/drivers/home/assets/coin.svg",
       "uiComponent": null
+    },
+    "time_price_highest": {
+      "type": "string",
+      "title": {
+        "en": "Highest Price Time"
+      },
+      "description": {
+        "en": "The time when the highest electricity price occurs."
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/drivers/home/assets/clock.svg"
+    },
+    "time_price_lowest": {
+      "type": "string",
+      "title": {
+        "en": "Lowest Price Time"
+      },
+      "description": {
+        "en": "The time when the lowest electricity price occurs."
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/drivers/home/assets/clock.svg"
     }
   }
 }

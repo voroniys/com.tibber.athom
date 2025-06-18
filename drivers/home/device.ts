@@ -321,6 +321,12 @@ export class HomeDevice extends Device {
     if (!this.hasCapability('measure_negative_price_time_remaining'))
       await this.addCapability('measure_negative_price_time_remaining');
 
+    if (!this.hasCapability('time_price_lowest'))
+      await this.addCapability('time_price_lowest');
+
+    if (!this.hasCapability('time_price_highest'))
+      await this.addCapability('time_price_highest');
+
     this.log(`Tibber home device ${this.getName()} has been initialized`);
     await this.#updateData();
     this.#negativeEnergyTimeUpdater();
@@ -707,6 +713,25 @@ export class HomeDevice extends Device {
       .catch(console.error)
       .finally(() => {
         this.log("Set 'measure_energy_highest' capability to", highestEnergy);
+      });
+
+    const timezone = this.homey.clock.getTimezone();
+    const lowestTime = this.#prices.lowestToday?.startsAt
+      ? this.#prices.lowestToday.startsAt.tz(timezone).format('HH:mm')
+      : null;
+    this.setCapabilityValue('time_price_lowest', lowestTime)
+      .catch(console.error)
+      .finally(() => {
+        this.log("Set 'time_price_lowest' capability to", lowestTime);
+      });
+
+    const highestTime = this.#prices.highestToday?.startsAt
+      ? this.#prices.highestToday.startsAt.tz(timezone).format('HH:mm')
+      : null;
+    this.setCapabilityValue('time_price_highest', highestTime)
+      .catch(console.error)
+      .finally(() => {
+        this.log("Set 'time_price_highest' capability to", highestTime);
       });
   }
 

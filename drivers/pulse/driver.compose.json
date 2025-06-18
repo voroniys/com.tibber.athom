@@ -10,7 +10,7 @@
     "meter_power.production",
     "accumulatedCost",
     "accumulatedReward",
-    "dayCost",
+    "measure_day_cost",
     "measure_current.L1",
     "measure_current.L2",
     "measure_current.L3",
@@ -29,7 +29,7 @@
     "accumulatedReward": {
       "decimals": 2
     },
-    "dayCost": {
+    "measure_day_cost": {
       "decimals": 2
     },
     "meter_power": {

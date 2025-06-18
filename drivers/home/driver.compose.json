@@ -14,7 +14,9 @@
     "measure_energy_lowest",
     "measure_energy_highest",
     "measure_energy_average",
-    "measure_negative_price_time_remaining"
+    "measure_negative_price_time_remaining",
+    "time_price_lowest",
+    "time_price_highest"
   ],
   "capabilitiesOptions": {
     "measure_price_total": {

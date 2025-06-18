@@ -83,7 +83,8 @@ class PulseDevice extends Device {
     if (!this.hasCapability('accumulatedReward'))
       await this.addCapability('accumulatedReward');
 
-    if (!this.hasCapability('dayCost')) await this.addCapability('dayCost');
+    if (!this.hasCapability('measure_day_cost'))
+      await this.addCapability('measure_day_cost');
 
     if (!this.hasCapability('measure_current.L1'))
       await this.addCapability('measure_current.L1');
@@ -195,8 +196,8 @@ class PulseDevice extends Device {
           // When server shuts down we end up here with message text "Unexpected server response: 503"
           const delay = randomBetweenRange(5, 120);
           this.log(`Resubscribe after ${delay} seconds`);
-          this.setUnavailable(
-            'Tibber API is temporary unavailable',
+          this.setUnavailable('Tibber API is temporary unavailable').catch(
+            this.error,
           );
           this.#resubscribeDebounce.cancel();
           this.homey.setTimeout(() => this.#subscribeToLive(), delay * 1000);
@@ -438,8 +439,8 @@ class PulseDevice extends Device {
               .trigger(this, { cost: fixedCost, total })
               .catch(console.error);
           });
-        this.log("Set 'dayCost' capability to", total);
-        this.setCapabilityValue('dayCost', total).catch(console.error);
+        this.log("Set 'measure_day_cost' capability to", total);
+        this.setCapabilityValue('measure_day_cost', total).catch(console.error);
       }
     }
 
@@ -457,8 +458,8 @@ class PulseDevice extends Device {
               .trigger(this, { reward: fixedReward, total })
               .catch(console.error);
           });
-        this.log("Set 'dayCost' capability to", total);
-        this.setCapabilityValue('dayCost', total).catch(console.error);
+        this.log("Set 'measure_day_cost' capability to", total);
+        this.setCapabilityValue('measure_day_cost', total).catch(console.error);
       }
     }
 

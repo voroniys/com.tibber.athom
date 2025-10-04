@@ -14,6 +14,7 @@ import {
   mean,
   sum,
   TimeString,
+  getCurrentSlot,
   min,
   max,
 } from '../../lib/helpers';
@@ -46,6 +47,7 @@ const deprecatedPriceLevelMap = {
 export class HomeDevice extends Device {
   #api!: TibberApi;
   #deviceLabel!: string;
+  #timeZone!: string;
   #insightId!: string;
   #prices: PriceData = { today: [] };
   #negativePriceEndsAt!: moment.Moment;
@@ -103,6 +105,7 @@ export class HomeDevice extends Device {
       );
     }
 
+    this.#timeZone = this.homey.clock.getTimezone();
     this.#deviceLabel = this.getName();
     this.#insightId = this.#deviceLabel
       .replace(/[^a-z0-9]/gi, '_')
@@ -418,24 +421,22 @@ export class HomeDevice extends Device {
   }
 
   async #handlePrice(now: moment.Moment) {
-    this.#prices.today = this.#api.hourlyPrices
-      .filter((p) =>
-        p.startsAt.tz(this.homey.clock.getTimezone()).isSame(now, 'day'),
-      )
+    this.#prices.today = this.#api.quarterPrices
+      .filter((p) => p.startsAt.tz(this.#timeZone).isSame(now, 'day'))
       .sort((a, b) => a.startsAt.diff(b.startsAt));
 
     // NOTE: this also updates capability values
     this.#updateLowestAndHighestPrice(now);
 
-    const currentHour = now.clone().startOf('hour');
+    const currentSlot = getCurrentSlot(now);
 
     const currentPrice = this.#prices.today.find((p) =>
-      currentHour.isSame(p.startsAt),
+      currentSlot.isSame(p.startsAt),
     );
 
     if (currentPrice === undefined) {
       this.log(
-        `Error finding current price info for system time ${currentHour.format()}. Abort.`,
+        `Error finding current price info for system time ${currentSlot.format()}. Abort.`,
         this.#prices.today,
       );
       return;
@@ -445,12 +446,12 @@ export class HomeDevice extends Device {
       driverId: 'home',
       deviceId: this.getData().id,
       now,
-      currentHour,
+      currentSlot,
       currentPrice,
       lowestToday: this.#prices.lowestToday,
       highestToday: this.#prices.highestToday,
       pricesToday: this.#prices.today,
-      hourlyPrices: this.#api.hourlyPrices,
+      quarterPrices: this.#api.quarterPrices,
     });
 
     const shouldUpdate =
@@ -715,9 +716,8 @@ export class HomeDevice extends Device {
         this.log("Set 'measure_energy_highest' capability to", highestEnergy);
       });
 
-    const timezone = this.homey.clock.getTimezone();
     const lowestTime = this.#prices.lowestToday?.startsAt
-      ? this.#prices.lowestToday.startsAt.tz(timezone).format('HH:mm')
+      ? this.#prices.lowestToday.startsAt.tz(this.#timeZone).format('HH:mm')
       : null;
     this.setCapabilityValue('time_price_lowest', lowestTime)
       .catch(console.error)
@@ -726,7 +726,7 @@ export class HomeDevice extends Device {
       });
 
     const highestTime = this.#prices.highestToday?.startsAt
-      ? this.#prices.highestToday.startsAt.tz(timezone).format('HH:mm')
+      ? this.#prices.highestToday.startsAt.tz(this.#timeZone).format('HH:mm')
       : null;
     this.setCapabilityValue('time_price_highest', highestTime)
       .catch(console.error)
@@ -948,7 +948,7 @@ export class HomeDevice extends Device {
     const now = moment();
     return averagePrice(
       this.log,
-      this.#api.hourlyPrices,
+      this.#api.quarterPrices,
       this.#prices,
       now,
       options,
@@ -966,7 +966,7 @@ export class HomeDevice extends Device {
     const now = moment();
     return priceExtremes(
       this.log,
-      this.#api.hourlyPrices,
+      this.#api.quarterPrices,
       this.#prices,
       now,
       options,
@@ -979,12 +979,10 @@ export class HomeDevice extends Device {
     start_time: TimeString;
     end_time: TimeString;
   }): boolean {
-    // we need to parse times w/o tz info here, so we need to assume a tz.
-    // consider moving into the helper function
-    const now = moment().tz(this.homey.clock.getTimezone());
+    const now = moment().tz(this.#timeZone);
     return lowestPricesWithinTimeFrame(
       this.log,
-      this.#api.hourlyPrices,
+      this.#api.quarterPrices,
       this.#prices,
       now,
       options,
@@ -1025,20 +1023,20 @@ export class HomeDevice extends Device {
 
   getDeviceData() {
     const now = moment();
-    const currentHour = now.clone().startOf('hour');
+    const currentSlot = getCurrentSlot(now);
     const currentPrice =
-      this.#prices.today.find((p) => currentHour.isSame(p.startsAt)) || 0;
+      this.#prices.today.find((p) => currentSlot.isSame(p.startsAt)) || 0;
 
     return {
       driverId: 'home',
       deviceId: this.getData().id,
       now,
-      currentHour,
+      currentSlot,
       currentPrice,
       lowestToday: this.#prices.lowestToday,
       highestToday: this.#prices.highestToday,
       pricesToday: this.#prices.today,
-      hourlyPrices: this.#api.hourlyPrices,
+      quarterPrices: this.#api.quarterPrices,
     };
   }
 }

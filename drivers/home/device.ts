@@ -374,10 +374,12 @@ export class HomeDevice extends Device {
         await this.#generateConsumptionReport(now);
       }
 
-      const nextUpdateTime = moment()
-        .add(1, 'hour')
-        .startOf('hour')
-        .add(randomBetweenRange(0, 10), 'seconds');
+      // calculate time to next 15 min slot
+      const minutesToAdd = (15 - (now.minute() % 15)) % 15 || 15;
+      const nextUpdateTime = now.clone()
+        .add(minutesToAdd, 'minutes') // jump to next 15-min slot
+        .startOf('minute')
+        .add(randomBetweenRange(0, 3), 'seconds'); // add small jitter
 
       this.log(
         `Next time to run update is at system time ${nextUpdateTime.format()}`,

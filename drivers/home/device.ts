@@ -376,7 +376,8 @@ export class HomeDevice extends Device {
 
       // calculate time to next 15 min slot
       const minutesToAdd = (15 - (now.minute() % 15)) % 15 || 15;
-      const nextUpdateTime = now.clone()
+      const nextUpdateTime = now
+        .clone()
         .add(minutesToAdd, 'minutes') // jump to next 15-min slot
         .startOf('minute')
         .add(randomBetweenRange(0, 3), 'seconds'); // add small jitter
@@ -648,11 +649,25 @@ export class HomeDevice extends Device {
   }
 
   // Call updateNegativeEnergyTime every minute using the latest price info
-  #negativeEnergyTimeUpdater() {
-    setInterval(() => {
-      if (this.#prices.latest)
-        this.#updateNegativeEnergyTime(moment(), this.#prices.latest);
-    }, 60000); // 60000ms = 1 minute
+  #negativeEnergyTimeUpdater(): void {
+    const scheduleNextMinute = () => {
+      const now = moment();
+      const msToNextMinute =
+        60000 - (now.seconds() * 1000 + now.milliseconds());
+
+      this.homey.setTimeout(() => {
+        if (this.#prices.latest)
+          this.#updateNegativeEnergyTime(moment(), this.#prices.latest);
+
+        // Now start fixed 60s interval from the aligned point
+        this.homey.setInterval(() => {
+          if (this.#prices.latest)
+            this.#updateNegativeEnergyTime(moment(), this.#prices.latest);
+        }, 60000);
+      }, msToNextMinute);
+    };
+
+    scheduleNextMinute();
   }
 
   #updateLowestAndHighestPrice(now: moment.Moment) {

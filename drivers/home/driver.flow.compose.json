@@ -230,14 +230,14 @@
         "en": "Current price is one of today's lowest [x] prices"
       },
       "titleFormatted": {
-        "en": "Current price is one of today's lowest [[ranked_hours]] prices"
+        "en": "Current price is one of today's lowest [[ranked_slots]] prices"
       },
       "args": [
         {
-          "name": "ranked_hours",
+          "name": "ranked_slots",
           "type": "number",
           "title": {
-            "en": "Hours"
+            "en": "Slots"
           },
           "placeholder": {
             "en": "1"
@@ -252,14 +252,14 @@
         "en": "Current price is one of today's highest [x] prices"
       },
       "titleFormatted": {
-        "en": "Current price is one of today's highest [[ranked_hours]] prices"
+        "en": "Current price is one of today's highest [[ranked_slots]] prices"
       },
       "args": [
         {
-          "name": "ranked_hours",
+          "name": "ranked_slots",
           "type": "number",
           "title": {
-            "en": "Hours"
+            "en": "Slots"
           },
           "placeholder": {
             "en": "1"
@@ -299,20 +299,20 @@
         "en": "Current price is one of the [x] lowest prices between [y] and [z]"
       },
       "titleFormatted": {
-        "en": "Current price is one of the [[ranked_hours]] lowest prices between [[start_time]] and [[end_time]]"
+        "en": "Current price is one of the [[ranked_slots]] lowest prices between [[start_time]] and [[end_time]]"
       },
       "args": [
         {
-          "name": "ranked_hours",
+          "name": "ranked_slots",
           "type": "number",
           "title": {
-            "en": "Amount of lowest hours"
+            "en": "Amount of lowest slots"
           },
           "placeholder": {
             "en": "1"
           },
           "min": 1,
-          "max": 24,
+          "max": 96,
           "step": 1
         },
         {
@@ -554,14 +554,14 @@
         "en": "Current price !{{is|isn't}} one of today's lowest [x] prices"
       },
       "titleFormatted": {
-        "en": "Current price !{{is|isn't}} one of today's lowest [[ranked_hours]] prices"
+        "en": "Current price !{{is|isn't}} one of today's lowest [[ranked_slots]] prices"
       },
       "args": [
         {
-          "name": "ranked_hours",
+          "name": "ranked_slots",
           "type": "number",
           "title": {
-            "en": "Hours"
+            "en": "Slots"
           },
           "placeholder": {
             "en": "3"
@@ -576,14 +576,14 @@
         "en": "Current price !{{is|isn't}} one of today's highest [x] prices"
       },
       "titleFormatted": {
-        "en": "Current price !{{is|isn't}} one of today's highest [[ranked_hours]] prices"
+        "en": "Current price !{{is|isn't}} one of today's highest [[ranked_slots]] prices"
       },
       "args": [
         {
-          "name": "ranked_hours",
+          "name": "ranked_slots",
           "type": "number",
           "title": {
-            "en": "Hours"
+            "en": "Slots"
           },
           "placeholder": {
             "en": "3"

@@ -70,7 +70,7 @@ export const averagePrice = (
 
 export interface PriceExtremesOptions {
   hours?: number;
-  ranked_hours?: number;
+  ranked_slots?: number;
 }
 
 export interface PriceExtremesArguments {
@@ -85,7 +85,7 @@ export const priceExtremes = (
   options: PriceExtremesOptions,
   { lowest }: PriceExtremesArguments,
 ): boolean => {
-  const { hours, ranked_hours: rankedSlots } = options;
+  const { hours, ranked_slots: rankedSlots } = options;
   if (hours === 0 || rankedSlots === 0) return false;
 
   const slotCount = hours ? hours * SLOTS_PER_HOUR : undefined;
@@ -153,7 +153,7 @@ export const priceExtremes = (
 };
 
 export interface LowestPricesWithinTimeFrameOptions {
-  ranked_hours: number;
+  ranked_slots: number;
   start_time: TimeString;
   end_time: TimeString;
 }
@@ -166,7 +166,7 @@ export const lowestPricesWithinTimeFrame = (
   options: LowestPricesWithinTimeFrameOptions,
 ): boolean => {
   const {
-    ranked_hours: rankedSlots,
+    ranked_slots: rankedSlots,
     start_time: startTime,
     end_time: endTime,
   } = options;

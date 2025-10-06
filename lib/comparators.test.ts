@@ -87,7 +87,7 @@ describe('comparators (quarter-hourly)', () => {
           quarterHourlyPrices,
           priceData(now),
           now,
-          { ranked_hours: 3, hours: 12 },
+          { ranked_slots: 3, hours: 12 },
           { lowest: false },
         );
         expect(actual).toBe(false);

@@ -976,7 +976,7 @@ export class HomeDevice extends Device {
   #priceMinMaxComparator(
     options: {
       hours?: number;
-      ranked_hours?: number;
+      ranked_slots?: number;
     },
     args: { lowest: boolean },
   ): boolean {
@@ -992,7 +992,7 @@ export class HomeDevice extends Device {
   }
 
   #lowestPricesWithinTimeFrame(options: {
-    ranked_hours: number;
+    ranked_slots: number;
     start_time: TimeString;
     end_time: TimeString;
   }): boolean {

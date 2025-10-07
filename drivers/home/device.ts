@@ -76,6 +76,7 @@ export class HomeDevice extends Device {
   #currentPriceAtHighestTodayCondition!: FlowCard;
   #currentPriceAmongLowestTodayCondition!: FlowCard;
   #currentPriceAmongHighestTodayCondition!: FlowCard;
+  #currentPriceAmongLowestWithinHoursCondition!: FlowCard;
   #currentPriceAmongLowestWithinTimeFrameCondition!: FlowCard;
   #sendPushNotificationAction!: FlowCard;
   #hasDeprecatedTotalPriceCapability = false;
@@ -262,6 +263,12 @@ export class HomeDevice extends Device {
       this.homey.flow.getConditionCard('cond_price_among_highest_today');
     this.#currentPriceAmongHighestTodayCondition.registerRunListener((args) =>
       this.#priceMinMaxComparator(args, { lowest: false }),
+    );
+
+    this.#currentPriceAmongLowestWithinHoursCondition =
+      this.homey.flow.getConditionCard('price_among_lowest_during_hours');
+    this.#currentPriceAmongLowestWithinHoursCondition.registerRunListener(
+      (args) => this.#priceMinMaxComparator(args, { lowest: true }),
     );
 
     this.#currentPriceAmongLowestWithinTimeFrameCondition =

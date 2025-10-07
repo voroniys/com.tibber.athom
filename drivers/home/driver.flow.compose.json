@@ -339,6 +339,41 @@
       "platforms": ["local", "cloud"]
     },
     {
+      "id": "price_among_lowest_during_hours",
+      "title": {
+        "en": "Current price is one of the [x] lowest prices next [y] hours"
+      },
+      "titleFormatted": {
+        "en": "Current price is one of the [[ranked_slots]] lowest prices next [[hours]] hours"
+      },
+      "args": [
+        {
+          "name": "ranked_slots",
+          "type": "number",
+          "title": {
+            "en": "Amount of lowest slots"
+          },
+          "placeholder": {
+            "en": "1"
+          },
+          "min": 1,
+          "max": 96,
+          "step": 1
+        },
+        {
+          "name": "hours",
+          "type": "number",
+          "title": {
+            "en": "Hours"
+          },
+          "placeholder": {
+            "en": "1"
+          }
+        }
+      ],
+      "platforms": ["local", "cloud"]
+    },
+    {
       "id": "current_price_below",
       "title": {
         "en": "Current price !{{below|above}}"

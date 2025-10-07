@@ -89,12 +89,15 @@ export const priceExtremes = (
   if (hours === 0 || rankedSlots === 0) return false;
 
   const slotCount = hours ? hours * SLOTS_PER_HOUR : undefined;
+  const currentSlot = now.clone().startOf('minute');
+  currentSlot.minutes(Math.floor(currentSlot.minutes() / 15) * 15);
+
 
   const prices =
     slotCount !== undefined
       ? takeFromStartOrEnd(
           quarterPrices.filter((p) =>
-            hours! > 0 ? p.startsAt.isAfter(now) : p.startsAt.isBefore(now),
+            hours! > 0 ? p.startsAt.isSameOrAfter(currentSlot) : p.startsAt.isSameOrBefore(currentSlot),
           ),
           slotCount,
         )
